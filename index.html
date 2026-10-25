@@ -1,22 +1,23 @@
 <!doctype html>
-<html lang="he" dir="rtl" data-theme="dark">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>גלגל השאלות</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#07111e">
+<meta name="theme-color" content="#07111e" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#00609d" media="(prefers-color-scheme: light)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Secular+One&display=swap">
 <style>
-html{color-scheme:dark;overflow-x:hidden}body{margin:0;overflow-x:hidden}
+html{overflow-x:hidden}body{margin:0;overflow-x:hidden}
 /* The spinning square canvas sticks out past the page edge mid-rotation; clipping stops phones from zooming out. */
 
 /* Layout: heading on top, then wheel (right) beside the question card (left) on wide screens; stacked on phones. */
 /* Brand palette taken from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
-/* Dark-only theme. Brand palette from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
+/* Dark by default; switches to light when the device is set to light. Brand palette from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
 :root {
   color-scheme: dark;
   --bg: #07111e;
@@ -36,6 +37,21 @@ html{color-scheme:dark;overflow-x:hidden}body{margin:0;overflow-x:hidden}
   --s5: #c4c5c9; --i5: #231f20;
   --font-display: "Secular One", "Arial Hebrew", Arial, sans-serif;
   --font-body: "Assistant", "Segoe UI", Arial, sans-serif;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: #edf1f6;
+    --surface: #ffffff;
+    --fg: #141821;
+    --muted: #536077;
+    --line: #d3dae4;
+    --accent: #00609d;
+    --accent-ink: #ffffff;
+    --red: #d81e27;
+    --glow: rgba(0, 96, 157, .14);
+    --s1: #00609d; --s2: #d81e27; --s3: #231f20; --s4: #ebde14; --s5: #bcbdc1;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -455,7 +471,7 @@ textarea {
   if (location.hash === "#edit") editor.open = true;
 
   if (window.ResizeObserver) new ResizeObserver(draw).observe(canvas); else window.addEventListener("resize", draw);
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+  window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", draw);
   new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 
