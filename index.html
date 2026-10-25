@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>גלגל השאלות</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#00609d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Secular+One&display=swap">
@@ -11,58 +14,59 @@
 html{color-scheme:light dark}body{margin:0}
 
 /* Layout: heading on top, then wheel (right) beside the question card (left) on wide screens; stacked on phones. */
+/* Brand palette taken from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
 :root {
-  --bg: #edf0f7;
+  --bg: #edf1f6;
   --surface: #ffffff;
-  --fg: #121a33;
-  --muted: #566080;
-  --line: #d3d9e8;
-  --accent: #0b8478;
+  --fg: #141821;
+  --muted: #536077;
+  --line: #d3dae4;
+  --accent: #00609d;
   --accent-ink: #ffffff;
-  --s1: #3b4cca;
-  --s2: #0b8478;
-  --s3: #c2386b;
-  --s4: #6a3fb5;
-  --s5: #8a6a00;
+  --red: #d81e27;
+  --yellow: #ebde14;
+  --glow: rgba(0, 96, 157, .14);
+  --s1: #00609d; --i1: #ffffff;
+  --s2: #d81e27; --i2: #ffffff;
+  --s3: #231f20; --i3: #ffffff;
+  --s4: #ebde14; --i4: #231f20;
+  --s5: #bcbdc1; --i5: #231f20;
   --font-display: "Secular One", "Arial Hebrew", Arial, sans-serif;
   --font-body: "Assistant", "Segoe UI", Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0e1426;
-    --surface: #17203a;
-    --fg: #eef1fb;
-    --muted: #9aa5c7;
-    --line: #2a3556;
-    --accent: #2fd0bd;
-    --accent-ink: #0b1220;
-    --s1: #4d5fe0;
-    --s2: #139c8e;
-    --s3: #d2487b;
-    --s4: #7d52cc;
-    --s5: #a07c06;
+    --bg: #07111e;
+    --surface: #0e1c30;
+    --fg: #eef2f8;
+    --muted: #9aa8bf;
+    --line: #213450;
+    --accent: #4aa8e6;
+    --accent-ink: #07111e;
+    --red: #f0444b;
+    --glow: rgba(74, 168, 230, .16);
+    --s1: #0a6db0; --s2: #e0262e; --s3: #2b2830; --s4: #ebde14; --s5: #c4c5c9;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0e1426;
-  --surface: #17203a;
-  --fg: #eef1fb;
-  --muted: #9aa5c7;
-  --line: #2a3556;
-  --accent: #2fd0bd;
-  --accent-ink: #0b1220;
-  --s1: #4d5fe0;
-  --s2: #139c8e;
-  --s3: #d2487b;
-  --s4: #7d52cc;
-  --s5: #a07c06;
+  --bg: #07111e;
+  --surface: #0e1c30;
+  --fg: #eef2f8;
+  --muted: #9aa8bf;
+  --line: #213450;
+  --accent: #4aa8e6;
+  --accent-ink: #07111e;
+  --red: #f0444b;
+  --glow: rgba(74, 168, 230, .16);
+  --s1: #0a6db0; --s2: #e0262e; --s3: #2b2830; --s4: #ebde14; --s5: #c4c5c9;
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 body {
-  background: var(--bg);
+  background: radial-gradient(1200px 520px at 50% -120px, var(--glow), transparent 70%) no-repeat, var(--bg);
+  min-height: 100vh;
   color: var(--fg);
   font-family: var(--font-body);
   font-size: 17px;
@@ -81,6 +85,14 @@ h1 {
   text-wrap: balance;
 }
 .sub { margin: 6px 0 0; color: var(--muted); }
+.brand { display: flex; align-items: center; gap: 18px; }
+.brand-logo { width: clamp(64px, 14vw, 92px); height: auto; aspect-ratio: 1; flex: none; filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
+.stripe { display: flex; height: 6px; border-radius: 99px; overflow: hidden; margin-top: 18px; max-width: 320px; }
+.stripe i { flex: 1; }
+.stripe i:nth-child(1) { background: var(--s1); }
+.stripe i:nth-child(2) { background: var(--red); }
+.stripe i:nth-child(3) { background: var(--yellow); }
+.stripe i:nth-child(4) { background: var(--s5); }
 
 .stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: center; }
 @media (min-width: 880px) {
@@ -101,15 +113,16 @@ h1 {
   filter: drop-shadow(0 2px 3px rgba(0,0,0,.3));
 }
 .hub {
-  position: absolute; top: 50%; left: 50%; width: 22%; aspect-ratio: 1;
+  position: absolute; top: 50%; left: 50%; width: 27%; aspect-ratio: 1;
   transform: translate(-50%, -50%); border-radius: 50%;
-  border: 4px solid var(--surface);
-  background: var(--accent); color: var(--accent-ink);
-  font-family: var(--font-display); font-size: clamp(.9rem, 3.4vw, 1.2rem);
+  border: 5px solid var(--surface); padding: 0; overflow: hidden;
+  background: var(--surface);
   cursor: pointer; z-index: 2;
-  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  box-shadow: 0 0 0 2px var(--line), 0 6px 18px rgba(0,0,0,.3);
+  transition: transform .2s ease;
 }
-.hub:hover:not(:disabled) { filter: brightness(1.08); }
+.hub img { display: block; width: 100%; height: 100%; }
+.hub:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.05); }
 .hub:disabled { cursor: default; opacity: .85; }
 .hub:focus-visible, button:focus-visible, summary:focus-visible, textarea:focus-visible, input:focus-visible {
   outline: 3px solid var(--fg); outline-offset: 3px;
@@ -117,10 +130,11 @@ h1 {
 
 .card {
   background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  border-top: 5px solid var(--red);
   padding: 24px; min-height: 220px; display: flex; flex-direction: column; justify-content: center; gap: 12px;
   min-width: 0;
 }
-.card .num { font-family: var(--font-display); color: var(--accent); font-size: 1.1rem; letter-spacing: .02em; }
+.card .num { font-family: var(--font-display); color: var(--red); font-size: 1.1rem; letter-spacing: .02em; }
 .card .q { font-size: clamp(1.5rem, 4.4vw, 2.1rem); line-height: 1.3; font-weight: 600; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
 .card .hint { color: var(--muted); margin: 0; font-size: 1.1rem; }
 .card.pop .q, .card.pop .num { animation: pop .45s ease-out; }
@@ -147,7 +161,7 @@ textarea {
 }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
 .status { color: var(--muted); font-size: .95rem; }
-.status.err { color: var(--s3); }
+.status.err { color: var(--red); }
 
 @media (prefers-reduced-motion: reduce) {
   .card.pop .q, .card.pop .num { animation: none; }
@@ -158,15 +172,21 @@ textarea {
 <body>
 <div class="app" dir="rtl" lang="he">
   <header>
-    <h1>גלגל השאלות</h1>
-    <p class="sub">לוחצים על הגלגל ומקבלים שאלה.</p>
+    <div class="brand">
+      <img class="brand-logo" src="logo.png" alt="לוגו" width="92" height="92">
+      <div>
+        <h1>גלגל השאלות</h1>
+        <p class="sub">לוחצים על הלוגו שבמרכז הגלגל ומקבלים שאלה.</p>
+      </div>
+    </div>
+    <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   </header>
 
   <div class="stage">
     <div class="wheel-wrap">
       <canvas id="wheel" aria-hidden="true"></canvas>
-      <svg class="pointer" viewBox="0 0 34 42" aria-hidden="true"><path d="M17 40 L3 6 Q17 -2 31 6 Z" fill="var(--fg)" stroke="var(--surface)" stroke-width="3" stroke-linejoin="round"/></svg>
-      <button class="hub" id="hub" type="button" aria-label="סובבו את הגלגל">סובבו</button>
+      <svg class="pointer" viewBox="0 0 34 42" aria-hidden="true"><path d="M17 40 L3 6 Q17 -2 31 6 Z" fill="var(--red)" stroke="var(--surface)" stroke-width="3" stroke-linejoin="round"/></svg>
+      <button class="hub" id="hub" type="button" aria-label="סובבו את הגלגל"><img src="logo.png" alt="" width="128" height="128"></button>
     </div>
 
     <div style="display:grid; gap:14px; min-width:0">
@@ -314,6 +334,7 @@ textarea {
     var R = c;
     var a = (Math.PI * 2) / n;
     var cols = [css("--s1"), css("--s2"), css("--s3"), css("--s4"), css("--s5")];
+    var inks = [css("--i1"), css("--i2"), css("--i3"), css("--i4"), css("--i5")];
     var surface = css("--surface");
     var fontPx = Math.max(10, Math.min(20, size * (n > 40 ? 0.03 : 0.036)));
     ctx.font = "700 " + fontPx + "px " + css("--font-body");
@@ -327,7 +348,8 @@ textarea {
       ctx.moveTo(c, c);
       ctx.arc(c, c, R, start, start + a);
       ctx.closePath();
-      ctx.fillStyle = cols[colorIndex(i, n)];
+      var ci = colorIndex(i, n);
+      ctx.fillStyle = cols[ci];
       ctx.fill();
       ctx.lineWidth = 1.5;
       ctx.strokeStyle = surface;
@@ -335,7 +357,7 @@ textarea {
       ctx.save();
       ctx.translate(c, c);
       ctx.rotate(start + a / 2);
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = inks[ci];
       ctx.fillText(String(i + 1), R - size * 0.03, 0);
       ctx.restore();
     }
