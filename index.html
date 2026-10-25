@@ -1,56 +1,24 @@
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>גלגל השאלות</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#00609d">
+<meta name="theme-color" content="#07111e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Secular+One&display=swap">
 <style>
-html{color-scheme:light dark;overflow-x:hidden}body{margin:0;overflow-x:hidden}
+html{color-scheme:dark;overflow-x:hidden}body{margin:0;overflow-x:hidden}
 /* The spinning square canvas sticks out past the page edge mid-rotation; clipping stops phones from zooming out. */
 
 /* Layout: heading on top, then wheel (right) beside the question card (left) on wide screens; stacked on phones. */
 /* Brand palette taken from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
+/* Dark-only theme. Brand palette from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
 :root {
-  --bg: #edf1f6;
-  --surface: #ffffff;
-  --fg: #141821;
-  --muted: #536077;
-  --line: #d3dae4;
-  --accent: #00609d;
-  --accent-ink: #ffffff;
-  --red: #d81e27;
-  --yellow: #ebde14;
-  --glow: rgba(0, 96, 157, .14);
-  --s1: #00609d; --i1: #ffffff;
-  --s2: #d81e27; --i2: #ffffff;
-  --s3: #231f20; --i3: #ffffff;
-  --s4: #ebde14; --i4: #231f20;
-  --s5: #bcbdc1; --i5: #231f20;
-  --font-display: "Secular One", "Arial Hebrew", Arial, sans-serif;
-  --font-body: "Assistant", "Segoe UI", Arial, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #07111e;
-    --surface: #0e1c30;
-    --fg: #eef2f8;
-    --muted: #9aa8bf;
-    --line: #213450;
-    --accent: #4aa8e6;
-    --accent-ink: #07111e;
-    --red: #f0444b;
-    --glow: rgba(74, 168, 230, .16);
-    --s1: #0a6db0; --s2: #e0262e; --s3: #2b2830; --s4: #ebde14; --s5: #c4c5c9;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
+  color-scheme: dark;
   --bg: #07111e;
   --surface: #0e1c30;
   --fg: #eef2f8;
@@ -59,9 +27,15 @@ html{color-scheme:light dark;overflow-x:hidden}body{margin:0;overflow-x:hidden}
   --accent: #4aa8e6;
   --accent-ink: #07111e;
   --red: #f0444b;
+  --yellow: #ebde14;
   --glow: rgba(74, 168, 230, .16);
-  --s1: #0a6db0; --s2: #e0262e; --s3: #2b2830; --s4: #ebde14; --s5: #c4c5c9;
-  color-scheme: dark;
+  --s1: #0a6db0; --i1: #ffffff;
+  --s2: #e0262e; --i2: #ffffff;
+  --s3: #2b2830; --i3: #ffffff;
+  --s4: #ebde14; --i4: #231f20;
+  --s5: #c4c5c9; --i5: #231f20;
+  --font-display: "Secular One", "Arial Hebrew", Arial, sans-serif;
+  --font-body: "Assistant", "Segoe UI", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
