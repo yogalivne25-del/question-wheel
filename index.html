@@ -6,8 +6,10 @@
 <title>גלגל השאלות</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#07111e" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#00609d" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#07111e" id="themeColor">
+<script>
+try { if (localStorage.getItem("question-wheel-theme") === "light") { document.documentElement.setAttribute("data-theme", "light"); } } catch (e) {}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Secular+One&display=swap">
@@ -17,7 +19,7 @@ html{overflow-x:hidden}body{margin:0;overflow-x:hidden}
 
 /* Layout: heading on top, then wheel (right) beside the question card (left) on wide screens; stacked on phones. */
 /* Brand palette taken from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
-/* Dark by default; switches to light when the device is set to light. Brand palette from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
+/* Dark by default; the toggle switches to light and the choice is remembered on this device. Brand palette from the logo: blue #00609d, red #ed1b24, yellow #ebde14, silver #bcbdc1, charcoal #231f20 */
 :root {
   color-scheme: dark;
   --bg: #07111e;
@@ -38,20 +40,19 @@ html{overflow-x:hidden}body{margin:0;overflow-x:hidden}
   --font-display: "Secular One", "Arial Hebrew", Arial, sans-serif;
   --font-body: "Assistant", "Segoe UI", Arial, sans-serif;
 }
-@media (prefers-color-scheme: light) {
-  :root {
+/* Light mode only when the viewer picks it with the toggle. */
+:root[data-theme="light"] {
     color-scheme: light;
-    --bg: #edf1f6;
-    --surface: #ffffff;
-    --fg: #141821;
-    --muted: #536077;
-    --line: #d3dae4;
-    --accent: #00609d;
-    --accent-ink: #ffffff;
-    --red: #d81e27;
-    --glow: rgba(0, 96, 157, .14);
-    --s1: #00609d; --s2: #d81e27; --s3: #231f20; --s4: #ebde14; --s5: #bcbdc1;
-  }
+  --bg: #edf1f6;
+  --surface: #ffffff;
+  --fg: #141821;
+  --muted: #536077;
+  --line: #d3dae4;
+  --accent: #00609d;
+  --accent-ink: #ffffff;
+  --red: #d81e27;
+  --glow: rgba(0, 96, 157, .14);
+  --s1: #00609d; --s2: #d81e27; --s3: #231f20; --s4: #ebde14; --s5: #bcbdc1;
 }
 
 * { box-sizing: border-box; }
@@ -76,7 +77,18 @@ h1 {
   text-wrap: balance;
 }
 .sub { margin: 6px 0 0; color: var(--muted); }
-.brand { display: flex; align-items: center; gap: 18px; }
+header { position: relative; }
+.brand { display: flex; align-items: center; gap: 18px; padding-inline-end: 56px; }
+.theme-toggle {
+  position: absolute; top: 0; inset-inline-end: 0;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  font-size: 1.25rem; line-height: 1; cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
 .brand-logo { width: clamp(64px, 14vw, 92px); height: auto; aspect-ratio: 1; flex: none; filter: drop-shadow(0 6px 14px rgba(0,0,0,.18)); }
 .stripe { display: flex; height: 6px; border-radius: 99px; overflow: hidden; margin-top: 18px; max-width: 320px; }
 .stripe i { flex: 1; }
@@ -163,6 +175,7 @@ textarea {
 <body>
 <div class="app" dir="rtl" lang="he">
   <header>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="מעבר למצב בהיר">☀️</button>
     <div class="brand">
       <img class="brand-logo" src="logo.png" alt="לוגו" width="92" height="92">
       <div>
@@ -471,7 +484,22 @@ textarea {
   if (location.hash === "#edit") editor.open = true;
 
   if (window.ResizeObserver) new ResizeObserver(draw).observe(canvas); else window.addEventListener("resize", draw);
-  window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", draw);
+  var themeBtn = document.getElementById("themeToggle");
+  var themeMeta = document.getElementById("themeColor");
+  function syncTheme() {
+    var light = document.documentElement.getAttribute("data-theme") === "light";
+    themeBtn.textContent = light ? "🌙" : "☀️";
+    themeBtn.setAttribute("aria-label", light ? "מעבר למצב כהה" : "מעבר למצב בהיר");
+    themeMeta.setAttribute("content", light ? "#edf1f6" : "#07111e");
+  }
+  themeBtn.addEventListener("click", function () {
+    var light = document.documentElement.getAttribute("data-theme") !== "light";
+    if (light) document.documentElement.setAttribute("data-theme", "light");
+    else document.documentElement.removeAttribute("data-theme");
+    try { localStorage.setItem("question-wheel-theme", light ? "light" : "dark"); } catch (e) {}
+    syncTheme();
+  });
+  syncTheme();
   new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 
